@@ -588,3 +588,45 @@ button, input, select {
         width: 100%;
     }
 }
+
+/* Footer Styles */
+.footer {
+    padding: 6rem 0 2rem;
+    border-top: 1px solid #333;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+@media(min-width: 768px) {
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.footer-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.footer-link {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--white);
+}
+
+.footer-bottom {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #222;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+}
