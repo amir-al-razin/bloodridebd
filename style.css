@@ -1,6 +1,6 @@
 /* Variables & Reset */
 :root {
-    --red: #E11D48;
+    --red: #BE123C; /* Darker, more professional red */
     --black: #09090b;
     --white: #ffffff;
     --gray: #f4f4f5;
@@ -91,7 +91,7 @@ button, input, select {
 }
 
 .btn-large.bg-red:hover {
-    background-color: #be123c; /* Darker red */
+    background-color: #9F1239; /* Even darker red for hover */
 }
 
 .btn-large.bg-black:hover {
