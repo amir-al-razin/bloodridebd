@@ -34,8 +34,12 @@
 </head>
 <body>
     <header class="header">
-        <div class="logo"><span><span class="text-red">Blood</span>Ride BD</span></div>
-        <div class="nav-actions">
+        <div class="logo"><a href="/" style="text-decoration: none; color: inherit;"><span><span class="text-red">Blood</span>Ride BD</span></a></div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="nav-actions" id="nav-menu">
+            <a href="privacy-policy.html" class="nav-link" style="text-decoration: none;">Privacy Policy</a>
             <button class="nav-link" onclick="openModal('patient')">Request Blood</button>
             <button class="btn-primary" onclick="openModal('donor')">Register as Donor</button>
         </div>
