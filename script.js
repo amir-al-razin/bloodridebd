@@ -24,6 +24,7 @@ const formDonor = document.getElementById('form-donor');
 const tabPatient = document.getElementById('tab-patient');
 const tabDonor = document.getElementById('tab-donor');
 const modalTitle = document.getElementById('modal-title');
+const modalSub = document.getElementById('modal-sub');
 const closeBtn = document.querySelector('.close-modal');
 
 function openModal(type) {
@@ -45,43 +46,121 @@ function closeModal() {
 function switchTab(type) {
     if (type === 'patient') {
         tabPatient.classList.add('active');
-        tabPatient.classList.replace('bg-black', 'bg-white');
-        tabPatient.classList.replace('text-white', 'text-black');
+        tabPatient.classList.replace('bg-white', 'bg-black');
+        tabPatient.classList.replace('text-black', 'text-white');
         tabPatient.style.border = 'none';
         
         tabDonor.classList.remove('active');
-        tabDonor.classList.replace('bg-white', 'bg-black');
-        tabDonor.classList.replace('text-black', 'text-white');
-        tabDonor.style.border = '2px solid white';
+        tabDonor.classList.replace('bg-black', 'bg-white');
+        tabDonor.classList.replace('text-white', 'text-black');
+        tabDonor.style.border = '2px solid var(--black)';
 
         formPatient.style.display = 'flex';
         formDonor.style.display = 'none';
         modalTitle.innerText = "Patient Request";
+        if (modalSub) modalSub.innerText = "No traffic. No syndicates. Priority treatment.";
     } else {
         tabDonor.classList.add('active');
-        tabDonor.classList.replace('bg-black', 'bg-white');
-        tabDonor.classList.replace('text-white', 'text-black');
+        tabDonor.classList.replace('bg-white', 'bg-black');
+        tabDonor.classList.replace('text-black', 'text-white');
         tabDonor.style.border = 'none';
         
         tabPatient.classList.remove('active');
-        tabPatient.classList.replace('bg-white', 'bg-black');
-        tabPatient.classList.replace('text-black', 'text-white');
-        tabPatient.style.border = '2px solid white';
+        tabPatient.classList.replace('bg-black', 'bg-white');
+        tabPatient.classList.replace('text-white', 'text-black');
+        tabPatient.style.border = '2px solid var(--black)';
 
         formDonor.style.display = 'flex';
         formPatient.style.display = 'none';
         modalTitle.innerText = "Donor Registration";
+        if (modalSub) modalSub.innerText = "Join Dhaka's premier life-saving logistics network. Zero obligation, total privacy.";
     }
 }
 
-function handleFormSubmit(e, type) {
+function toggleConditionalFields() {
+    const occupation = document.querySelector('input[name="occupation"]:checked')?.value;
+    const institutionGroup = document.getElementById('institution-group');
+    const institutionInput = document.getElementById('donor-institution');
+    
+    if (occupation === 'Student') {
+        institutionGroup.style.display = 'flex';
+        institutionInput.required = true;
+    } else {
+        institutionGroup.style.display = 'none';
+        institutionInput.required = false;
+        institutionInput.value = '';
+    }
+
+    const donatedBefore = document.querySelector('input[name="donatedBefore"]:checked')?.value;
+    const lastDonationGroup = document.getElementById('last-donation-group');
+    const lastDonationInput = document.getElementById('donor-last-date');
+    
+    if (donatedBefore === 'Yes') {
+        lastDonationGroup.style.display = 'flex';
+        lastDonationInput.required = true;
+    } else {
+        lastDonationGroup.style.display = 'none';
+        lastDonationInput.required = false;
+        lastDonationInput.value = '';
+    }
+}
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybHfnNArJdvi-bQfbZFNjbiU6PG9KHQfcG4Nw9FfhAFpVcWeSINKeSLTqzaS4vep6X/exec';
+
+async function handleFormSubmit(e, type) {
     e.preventDefault();
-    const message = type === 'patient' 
-        ? 'Your blood request has been prioritized. We will match you shortly!' 
-        : 'Thank you for registering as a Donor. You will be contacted when matched!';
-    alert(message);
-    closeModal();
-    e.target.reset();
+    
+    if (type === 'patient') {
+        alert('Patient request feature is being optimized. Please call the hotline.');
+        return;
+    }
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    // Show Loading State
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> REGISTERING...';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    submitBtn.style.cursor = 'not-allowed';
+
+    try {
+        const formData = new FormData(form);
+        
+        // Handle multiple checkboxes for contact method
+        const contactMethods = Array.from(formData.getAll('contactMethod')).join(', ');
+        formData.set('contactMethod', contactMethods);
+        
+        // Convert to URLSearchParams for seamless Google Apps Script parsing
+        const formBody = new URLSearchParams(formData).toString();
+        
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formBody,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.result === 'success') {
+            alert(`🎉 Registration Successful!\n\nYour unique BloodRide Donor ID is: ${result.donorId}\n\nPlease save this ID. We will contact you when a matching patient is found!`);
+            closeModal();
+            form.reset();
+        } else {
+            alert('Something went wrong on the server. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error!', error.message);
+        alert('Network error. Please check your connection and try again.');
+    } finally {
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+    }
 }
 
 // GSAP + Lenis ScrollTrigger Integration
