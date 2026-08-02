@@ -21,8 +21,6 @@ requestAnimationFrame(raf);
 const modal = document.getElementById('register-modal');
 const formPatient = document.getElementById('form-patient');
 const formDonor = document.getElementById('form-donor');
-const tabPatient = document.getElementById('tab-patient');
-const tabDonor = document.getElementById('tab-donor');
 const modalTitle = document.getElementById('modal-title');
 const modalSub = document.getElementById('modal-sub');
 const closeBtn = document.querySelector('.close-modal');
@@ -45,31 +43,11 @@ function closeModal() {
 
 function switchTab(type) {
     if (type === 'patient') {
-        tabPatient.classList.add('active');
-        tabPatient.classList.replace('bg-white', 'bg-black');
-        tabPatient.classList.replace('text-black', 'text-white');
-        tabPatient.style.border = 'none';
-        
-        tabDonor.classList.remove('active');
-        tabDonor.classList.replace('bg-black', 'bg-white');
-        tabDonor.classList.replace('text-white', 'text-black');
-        tabDonor.style.border = '2px solid var(--black)';
-
         formPatient.style.display = 'flex';
         formDonor.style.display = 'none';
         modalTitle.innerText = "Patient Request";
         if (modalSub) modalSub.innerText = "No traffic. No syndicates. Priority treatment.";
     } else {
-        tabDonor.classList.add('active');
-        tabDonor.classList.replace('bg-white', 'bg-black');
-        tabDonor.classList.replace('text-black', 'text-white');
-        tabDonor.style.border = 'none';
-        
-        tabPatient.classList.remove('active');
-        tabPatient.classList.replace('bg-black', 'bg-white');
-        tabPatient.classList.replace('text-white', 'text-black');
-        tabPatient.style.border = '2px solid var(--black)';
-
         formDonor.style.display = 'flex';
         formPatient.style.display = 'none';
         modalTitle.innerText = "Donor Registration";
