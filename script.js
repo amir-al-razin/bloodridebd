@@ -110,6 +110,22 @@ async function handleFormSubmit(e, type) {
         const contactMethods = Array.from(formData.getAll('contactMethod')).join(', ');
         formData.set('contactMethod', contactMethods);
         
+        // Format Phone Numbers to prevent Google Sheets from stripping leading zeros
+        const formatPhone = (num) => {
+            if (!num) return num;
+            let cleaned = num.replace(/\D/g, ''); // remove non-digits
+            if (cleaned.startsWith('880')) cleaned = '+' + cleaned;
+            else if (cleaned.startsWith('01')) cleaned = '+88' + cleaned;
+            else if (cleaned.startsWith('1')) cleaned = '+880' + cleaned;
+            
+            // Prepend single quote so Google Sheets treats it as plain text and doesn't strip the + or 0
+            return "'" + cleaned;
+        };
+
+        if (formData.get('mobile')) formData.set('mobile', formatPhone(formData.get('mobile')));
+        if (formData.get('whatsapp')) formData.set('whatsapp', formatPhone(formData.get('whatsapp')));
+        if (formData.get('emergencyMobile')) formData.set('emergencyMobile', formatPhone(formData.get('emergencyMobile')));
+        
         // Convert to URLSearchParams for seamless Google Apps Script parsing
         const formBody = new URLSearchParams(formData).toString();
         
