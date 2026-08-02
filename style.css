@@ -211,84 +211,99 @@ button, input, select {
     max-width: 1000px;
 }
 
-/* Pinned Process Visual */
-.process-visual {
-    background: var(--white);
-}
-
-.pin-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.journey-header {
-    margin-bottom: 4rem;
-}
-
-.journey-title {
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1;
-}
-
-.journey-layout {
+/* Modern Card Grid for Process Section */
+.steps-modern-grid {
     display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 4rem;
-    align-items: center;
-    height: 50vh;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-.journey-map-wrapper {
-    height: 100%;
+.step-modern-card {
+    background: #f8fafc;
+    padding: 3rem;
+    border: 2px solid var(--black);
+    border-radius: 12px;
     position: relative;
-}
-
-.journey-svg-vertical {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-
-
-.journey-steps {
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
 }
 
-.step-card {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    opacity: 0.3;
-    transition: opacity 0.5s ease;
+.step-modern-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 12px 12px 0px 0px rgba(225, 29, 72, 0.2);
 }
 
-.step-card.active {
-    opacity: 1;
+.step-modern-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--white);
+    z-index: 1;
+    transition: background 0.3s ease;
 }
 
-.step-card .step-num {
-    font-size: 3rem;
+.step-modern-card:hover .step-modern-bg {
+    background: #fff1f2; /* subtle red tint on hover */
+}
+
+.step-number-bg {
+    font-size: 8rem;
     font-weight: 900;
-    color: var(--red);
+    color: rgba(225, 29, 72, 0.05); /* very faint red */
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
     line-height: 1;
+    z-index: 2;
+    pointer-events: none;
+    transition: color 0.3s ease;
 }
 
-.step-card h4 {
+.step-modern-card:hover .step-number-bg {
+    color: rgba(225, 29, 72, 0.1);
+}
+
+.step-modern-icon {
+    font-size: 3rem;
+    color: var(--red);
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 3;
+}
+
+.step-modern-title {
     font-size: 2rem;
     font-weight: 800;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 3;
 }
 
-.step-card p {
-    font-size: 1.25rem;
+.step-modern-desc {
+    font-size: 1.125rem;
     color: var(--dark-gray);
     font-weight: 500;
+    line-height: 1.6;
+    position: relative;
+    z-index: 3;
+}
+
+/* Staggered cards on desktop */
+@media (min-width: 992px) {
+    .step-card-delay-1 {
+        transform: translateY(2rem);
+    }
+    .step-card-delay-2 {
+        transform: translateY(4rem);
+    }
+    
+    .step-card-delay-1:hover {
+        transform: translateY(calc(2rem - 8px));
+    }
+    .step-card-delay-2:hover {
+        transform: translateY(calc(4rem - 8px));
+    }
 }
 
 /* Guarantees */

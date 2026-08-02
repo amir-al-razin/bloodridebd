@@ -173,34 +173,7 @@ gsap.ticker.add((time) => {
 });
 gsap.ticker.lagSmoothing(0);
 
-// Scroll-driven animation for the Pinned Vertical Map
-const tl = gsap.timeline({
-    scrollTrigger: {
-        trigger: '.pin-container',
-        start: 'top top',
-        end: '+=2500', // Scroll distance to play animation
-        scrub: 1,      // Smooth scrubbing
-        pin: true      // Pin the section!
-    }
-});
 
-// The line is revealed by animating the height of the SVG clipPath rect
-// The clip rect height goes from 0 to 700
-
-// Initialize Node 1
-tl.to('#node-1', { stroke: '#E11D48', duration: 0.1 }, 0);
-
-// Node 1 -> Node 2
-tl.to('#clip-rect', { attr: { height: 350 }, duration: 1, ease: 'none' }, 0)
-  .to('#step-1', { opacity: 0.3, duration: 0.5 }, 0.5)
-  .to('#step-2', { opacity: 1, duration: 0.5 }, 0.5)
-  .to('#node-2', { stroke: '#E11D48', duration: 0.2 }, 1);
-
-// Node 2 -> Node 3
-tl.to('#clip-rect', { attr: { height: 700 }, duration: 1, ease: 'none' }, 1)
-  .to('#step-2', { opacity: 0.3, duration: 0.5 }, 1.5)
-  .to('#step-3', { opacity: 1, duration: 0.5 }, 1.5)
-  .to('#node-3', { stroke: '#E11D48', duration: 0.2 }, 2);
 
 // Mobile Sticky CTA toggle
 const mobileCta = document.getElementById('mobile-cta');
